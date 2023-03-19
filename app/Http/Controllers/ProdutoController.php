@@ -8,6 +8,9 @@ use App\Http\Requests\UpdateProdutoRequest;
 
 class ProdutoController extends Controller
 {
+    public function __construct(Produto $produto){
+        $this->produto = $produto;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +39,7 @@ class ProdutoController extends Controller
      */
     public function store(StoreProdutoRequest $request)
     {
-        //
+        $request->validate($this->produto->rules());
     }
 
     /**
