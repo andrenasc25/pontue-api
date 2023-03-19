@@ -40,6 +40,11 @@ class ProdutoController extends Controller
     public function store(StoreProdutoRequest $request)
     {
         $request->validate($this->produto->rules());
+        $produto = $this->produto->create([
+            'nome' => $request->nome,
+            'descricao' => $request->descricao
+        ]);
+        return response()->json($produto, 200);
     }
 
     /**
