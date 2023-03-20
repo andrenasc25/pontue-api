@@ -19,11 +19,18 @@ class ProdutoController extends Controller
      */
     public function index(Request $request)
     {
+        if(Produto::count() < 2){
+            return response()->json(['erro' => 'A quantidade total de registros de produtos é menor do que 2'], 500);
+        }
+        
         if($request->has('filtro')){
-            $filtros = explode(';', $request->filtro);
-            foreach($filtros as $key => $condicao){
-                $c = explode(':', $condicao);
-                $this->produto = $this->produto->where($c[0], $c[1], $c[2]);
+            if(strpos($request->filtro, ',')){
+                $produtos = explode(',', $request->filtro);
+                foreach($produtos as $produto){
+                    $this->produto = $this->produto->orWhere('id', $produto);
+                }
+            }else{
+                return response()->json(['erro' => 'Pesquise pelo menos dois produtos'], 400);
             }
         }
 
