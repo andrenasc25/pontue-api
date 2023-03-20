@@ -18,4 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('produto', 'App\Http\Controllers\ProdutoController');
+Route::prefix('v1')->middleware('jwt.auth')->group(function(){
+    Route::apiResource('produto', 'App\Http\Controllers\ProdutoController');
+});
+
+Route::post('login', 'App\Http\Controllers\AuthController@login');
