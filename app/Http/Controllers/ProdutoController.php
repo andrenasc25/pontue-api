@@ -85,11 +85,7 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-        $produto = $this->produto->find($id);
-        if($produto === null){
-            return response()->json(['erro' => 'Recurso pesquisado não existe'], 404);
-        }
-        return response()->json($produto, 200);
+        
     }
 
     /**
