@@ -112,28 +112,51 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $produto = $this->produto->find($id);
+        $produtos = explode(',', $id);
+        $nomes = explode(';', $request->nome);
+        $descricoes = explode(';', $request->descricao);
+        $msg = array();
 
-        if($produto === null){
-            return response()->json(['erro' => 'Impossível realizar a atualização. O recurso solicitado não existe'], 404);
+        foreach($produtos as $produto){
+            if(!$this->produto->find($produto)){
+                array_push($msg, $produto);
+            }
         }
 
-        if($request->method() === 'PATCH'){
-            $regrasDinamicas = array();
-            foreach($produto->rules() as $input => $regra){
-                if(array_key_exists($input, $request->all())){
-                    $regrasDinamicas[$input] = $regra;
+        if($msg != null){
+            if(sizeof($msg) == 1){
+                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto atualizado']);
+            }
+            $mensagem = '';
+            foreach($msg as $m){
+                if($msg[count($msg) - 2] == $m){
+                    $mensagem = $mensagem . $m . ' e ';
+                }else if($msg[count($msg) - 1] == $m){
+                    $mensagem = $mensagem . $m;
+                }else{
+                    $mensagem = $mensagem . $m . ', ';
                 }
             }
-            $request->validate($regrasDinamicas);
+            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto atualizado']);
         }else{
-            $request->validate($produto->rules());
+            if(sizeof($nomes) != sizeof($descricoes)){
+                return response()->json(['erro' => 'A quantidade de produtos inserida tem que ser igual à quantidade de descrições']);
+            }
+            if(sizeof($produtos) != sizeof($nomes)){
+                return response()->json(['erro' => 'A quantidade de ids passados por parâmetro tem que ser igual à quantidade de nomes e descrições']);
+            }
         }
 
-        $produto->fill($request->all());
-        $produto->save();
+        foreach($produtos as $key => $produto){
+            $p = $this->produto->find($produto);
 
-        return response()->json($produto, 200);
+            $request->validate($this->produto->rules());
+            $p->nome = $nomes[$key];
+            $p->descricao = $descricoes[$key];
+            $p->save();
+        }
+
+        return response()->json('Produtos atualizados com sucesso', 200);
     }
 
     /**
