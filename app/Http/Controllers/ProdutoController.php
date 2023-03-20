@@ -81,9 +81,30 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProdutoRequest $request, Produto $produto)
+    public function update(Request $request, $id)
     {
-        //
+        $produto = $this->produto->find($id);
+
+        if($produto === null){
+            return response()->json(['erro' => 'Impossível realizar a atualização. O recurso solicitado não existe'], 404);
+        }
+
+        if($request->method() === 'PATCH'){
+            $regrasDinamicas = array();
+            foreach($produto->rules() as $input => $regra){
+                if(array_key_exists($input, $request->all())){
+                    $regrasDinamicas[$input] = $regra;
+                }
+            }
+            $request->validate($regrasDinamicas);
+        }else{
+            $request->validate($produto->rules());
+        }
+
+        $produto->fill($request->all());
+        $produto->save();
+
+        return response()->json($produto, 200);
     }
 
     /**
