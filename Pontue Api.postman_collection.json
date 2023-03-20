@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "2ec6ed48-d61e-4804-ac62-02bc33002448",
+		"name": "Pontue Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/api/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "email@exemplo.com",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/v1/produto/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY3OTMyOTA4NiwiZXhwIjoxNjc5MzMyNjg2LCJuYmYiOjE2NzkzMjkwODYsImp0aSI6IkJ5Nk91Y1hDUnNxZHJwNnQiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Md_RByeJyeijAeCR-F2gC6bzWRSpbCgz6ZPAdegtFI4",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nome",
+							"value": "produto;produto2",
+							"type": "default"
+						},
+						{
+							"key": "descricao",
+							"value": "descrição do produto;descrição do produto2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/produto/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"produto",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/v1/logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY3OTI3MTA5MCwiZXhwIjoxNjc5Mjc0NjkwLCJuYmYiOjE2NzkyNzEwOTAsImp0aSI6InVoTnQyNmJRV05PQUZaRGwiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.vMzMv0dO-GxscMxvRvvMMSplpdHuEyGY65dEeIgztN4",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/v1/produto?filtro=1,2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY3OTMzNDg3MCwiZXhwIjoxNjc5MzM4NDcwLCJuYmYiOjE2NzkzMzQ4NzAsImp0aSI6IlJzV3pxYmQ2aUFVUVFGN3YiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.eDK4gVcgfuVT1c23x92HMhDwOnagnqfReefV7LfAGXs",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/produto?filtro=1,2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"produto"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "1,2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/v1/produto/1,2,3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY3OTMyNTkyMywiZXhwIjoxNjc5MzI5NTIzLCJuYmYiOjE2NzkzMjU5MjMsImp0aSI6ImxRZUdJdUtDVXFnMEVKNHYiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.c5yNnMoMyzWY7jNftLpkMM_lSp9nyRUxFfNmBLXlZVc",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "_method",
+							"value": "put",
+							"type": "default"
+						},
+						{
+							"key": "nome",
+							"value": "nome atualizado;nome atualizado2;nome atualizado3",
+							"type": "default"
+						},
+						{
+							"key": "descricao",
+							"value": "descrição atualizada;descrição atualizada2; descrição atualizada3",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/produto/1,2,3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"produto",
+						"1,2,3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/v1/produto/3,4",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY3OTMyNjg3MywiZXhwIjoxNjc5MzMwNDczLCJuYmYiOjE2NzkzMjY4NzMsImp0aSI6IkQ5MU51aXZFd3EwY0ZsVzQiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.AU2MbfX0reoEYoFS-vI5WDTQpbU1zTWYREyRSAeMj2A",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/v1/produto/3,4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"produto",
+						"3,4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/v1/reset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTY3OTMzNTY0MiwiZXhwIjoxNjc5MzM5MjQyLCJuYmYiOjE2NzkzMzU2NDIsImp0aSI6Im9ITWJoWHAxWlhaWmZ1MGoiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.7MsT9FkEFdKDMVTe17ngrWkbDcKggwQRsxayzIlV3fE",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "newPassword",
+							"value": "password2",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/v1/reset",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

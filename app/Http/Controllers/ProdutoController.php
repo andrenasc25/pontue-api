@@ -121,7 +121,7 @@ class ProdutoController extends Controller
 
         if($msg != null){
             if(sizeof($msg) == 1){
-                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto atualizado']);
+                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto atualizado'], 500);
             }
             $mensagem = '';
             foreach($msg as $m){
@@ -133,16 +133,16 @@ class ProdutoController extends Controller
                     $mensagem = $mensagem . $m . ', ';
                 }
             }
-            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto atualizado']);
+            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto atualizado'], 500);
         }else{
             if(sizeof($nomes) != sizeof($descricoes)){
-                return response()->json(['erro' => 'A quantidade de produtos inserida tem que ser igual à quantidade de descrições']);
+                return response()->json(['erro' => 'A quantidade de produtos inserida tem que ser igual à quantidade de descrições'], 400);
             }
             if(sizeof($produtos) != sizeof($nomes)){
-                return response()->json(['erro' => 'A quantidade de ids passados por parâmetro tem que ser igual à quantidade de nomes e descrições']);
+                return response()->json(['erro' => 'A quantidade de ids passados por parâmetro tem que ser igual à quantidade de nomes e descrições'], 400);
             }
             if(sizeof($produtos) < 2){
-                return response()->json(['erro' => 'Pelo menos dois produtos devem ser atualizados']);
+                return response()->json(['erro' => 'Pelo menos dois produtos devem ser atualizados'], 400);
             }
         }
 
@@ -178,7 +178,7 @@ class ProdutoController extends Controller
 
         if($msg != null){
             if(sizeof($msg) == 1){
-                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto deletado']);
+                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto deletado'], 500);
             }
             $mensagem = '';
             foreach($msg as $m){
@@ -190,10 +190,10 @@ class ProdutoController extends Controller
                     $mensagem = $mensagem . $m . ', ';
                 }
             }
-            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto deletado']);
+            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto deletado'], 500);
         }else{
             if(sizeof($produtos) < 2){
-                return response()->json(['erro' => 'Pelo menos dois produtos devem ser deletados']);
+                return response()->json(['erro' => 'Pelo menos dois produtos devem ser deletados'], 400);
             }
         }
 
