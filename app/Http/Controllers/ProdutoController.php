@@ -48,12 +48,26 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->produto->rules());
-        $produto = $this->produto->create([
-            'nome' => $request->nome,
-            'descricao' => $request->descricao
-        ]);
-        return response()->json($produto, 200);
+        if(strpos($request->nome, ';') && strpos($request->descricao, ';')){
+            $nomes = explode(';', $request->nome);
+            $descricoes = explode(';', $request->descricao);
+            
+            if(sizeof($nomes) == sizeof($descricoes)){
+                $produtos = array();
+                foreach($nomes as $key => $nome){
+                    $request->validate($this->produto->rules());
+                    $produtos[$key] = $this->produto->create([
+                        'nome' => $nome,
+                        'descricao' => $descricoes[$key]
+                    ]);
+                }
+                return response()->json($produtos, 200);
+            }else{
+                return response()->json(['erro' => 'A quantidade de produtos inseridos deve ser a mesma de descrições'], 400);
+            }
+        }else{
+            return response()->json(['erro' => 'Insira pelo menos dois produtos e duas descrições'], 400);
+        }
     }
 
     /**
@@ -66,7 +80,7 @@ class ProdutoController extends Controller
     {
         $produto = $this->produto->find($id);
         if($produto === null){
-            return response()->json(['erro' => 'Produto pesquisado não existe'], 404);
+            return response()->json(['erro' => 'Recurso pesquisado não existe'], 404);
         }
         return response()->json($produto, 200);
     }
