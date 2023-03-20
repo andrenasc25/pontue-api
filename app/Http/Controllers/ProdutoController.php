@@ -145,6 +145,9 @@ class ProdutoController extends Controller
             if(sizeof($produtos) != sizeof($nomes)){
                 return response()->json(['erro' => 'A quantidade de ids passados por parâmetro tem que ser igual à quantidade de nomes e descrições']);
             }
+            if(sizeof($produtos) < 2){
+                return response()->json(['erro' => 'Pelo menos dois produtos devem ser atualizados']);
+            }
         }
 
         foreach($produtos as $key => $produto){
