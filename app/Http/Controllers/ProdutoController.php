@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Produto;
 use App\Http\Requests\StoreProdutoRequest;
 use App\Http\Requests\UpdateProdutoRequest;
+use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
@@ -37,7 +38,7 @@ class ProdutoController extends Controller
      * @param  \App\Http\Requests\StoreProdutoRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProdutoRequest $request)
+    public function store(Request $request)
     {
         $request->validate($this->produto->rules());
         $produto = $this->produto->create([
