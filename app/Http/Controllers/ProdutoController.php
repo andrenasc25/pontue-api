@@ -93,6 +93,11 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        //
+        $produto = $this->produto->find($id);
+        if($produto === null){
+            return response()->json(['erro' => 'O produto solicitado não existe'], 404);
+        }
+        $produto->delete();
+        return response()->json(['msg' => 'O produto foi removido com sucesso'], 200);
     }
 }
