@@ -53,9 +53,13 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function show(Produto $produto)
+    public function show($id)
     {
-        //
+        $produto = $this->produto->find($id);
+        if($produto === null){
+            return response()->json(['erro' => 'Produto pesquisado não existe'], 404);
+        }
+        return response()->json($produto, 200);
     }
 
     /**
