@@ -17,9 +17,17 @@ class ProdutoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->has('filtro')){
+            $filtros = explode(';', $request->filtro);
+            foreach($filtros as $key => $condicao){
+                $c = explode(':', $condicao);
+                $this->produto = $this->produto->where($c[0], $c[1], $c[2]);
+            }
+        }
+
+        return response()->json($this->produto->get(), 200);
     }
 
     /**
