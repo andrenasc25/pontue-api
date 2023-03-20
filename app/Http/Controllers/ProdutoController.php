@@ -168,13 +168,45 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produto $produto)
+    public function destroy($id)
     {
+        $produtos = explode(',', $id);
         $produto = $this->produto->find($id);
-        if($produto === null){
-            return response()->json(['erro' => 'O produto solicitado não existe'], 404);
+        $msg = array();
+
+        foreach($produtos as $produto){
+            if(!$this->produto->find($produto)){
+                array_push($msg, $produto);
+            }
         }
-        $produto->delete();
-        return response()->json(['msg' => 'O produto foi removido com sucesso'], 200);
+
+        if($msg != null){
+            if(sizeof($msg) == 1){
+                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto deletado']);
+            }
+            $mensagem = '';
+            foreach($msg as $m){
+                if($msg[count($msg) - 2] == $m){
+                    $mensagem = $mensagem . $m . ' e ';
+                }else if($msg[count($msg) - 1] == $m){
+                    $mensagem = $mensagem . $m;
+                }else{
+                    $mensagem = $mensagem . $m . ', ';
+                }
+            }
+            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto deletado']);
+        }else{
+            if(sizeof($produtos) < 2){
+                return response()->json(['erro' => 'Pelo menos dois produtos devem ser deletados']);
+            }
+        }
+
+        foreach($produtos as $produto){
+            $p = $this->produto->find($produto);
+
+            $p->delete();
+        }
+
+        return response()->json(['msg' => 'Os produtos foram removidos com sucesso'], 200);
     }
 }
