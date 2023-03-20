@@ -1,64 +1,55 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# API Pontue
+<p align="center">Uma api para Criar, Ler, Atualizar e Deletar produtos</p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### 🎲 Rodando o Back End
 
-## About Laravel
+```bash
+# Clone este repositório
+$ git clone <https://github.com/andre-rep/pontue-api>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Acesse a pasta do projeto no terminal/cmd
+$ cd pontue-api
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Instale as dependências
+$ composer install
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Executar as migrações
+$ php artisan migrate
 
-## Learning Laravel
+# Executar os seeds
+$ php artisan db:seed --class=UserTableSeeder
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Execute o servidor laravel
+$ php artisan serve
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# O servidor inciará na porta:8000 - acesse <http://localhost:8000>
+```
 
-## Laravel Sponsors
+### 🛠 Utilizar o Postman
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Para utilizar o postman, basta importar a collection que já foi preparada e está na raíz do projeto:
 
-### Premium Partners
+- Pontue Api.postman_collection.json
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Verbos Http da API
+| Método | Endpoint | Descrição | Exemplo de valores a serem enviados |
+|---|---|---|---|
+| `POST` | http://localhost:8000/api/login | Realiza o login na API. Utilizar as credenciais de exemplo. Após receber o token como resposta é necessário colocar no header com a chave "Authorization" e o valor "Bearer " + token para funcionar nas requisições seguintes | email: email@exemplo.com e password: password |
+| `POST` | http://localhost:8000/api/v1/produto/ | Insere novos produtos, aceita pelo menos dois produtos por inserção. Separar cada produto no valor por um ponto-e-vírgula (;) | nome: produto;produto2 e descricao: descrição do produto;descrição do produto2|
+| `POST` | http://localhost:8000/api/v1/logout | Faz logout na API | Apenas é necessário clicar para fazer a requisição |
+| `GET` | http://localhost:8000/api/v1/produto?filtro=1,2 | Exibe produtos através de seus id's como parâmetro, pelo menos dois são necessários para fazer a requisição | É necessário apenas enviar a url |
+| `POST` | http://localhost:8000/api/v1/produto/1,2,3 | Atualiza produtos de acordo com parâmetros e valores passados | _method: put, nome: nome atualizado;nome atualizado2;nome atualizado3 e descrição atualizada;descrição atualizada2; descrição atualizada3 |
+| `DELETE` | http://localhost:8000/api/v1/produto/3,4 | Deleta pelo menos dois produtos enviados como id pela url | Não é necessário enviar valores no corpo da requisição |
+| `POST` | http://localhost:8000/api/v1/reset | Reseta a senha do usuário | newPassword: password2 |
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Autor
+---
 
-## Code of Conduct
+<a href="https://github.com/andre-rep">
+ <img style="border-radius:50px;" src="https://avatars.githubusercontent.com/u/36203075?v=4" width="100px;" alt=""/>
+ <br />
+ <sub><b>André Nascimento</b></sub></a> <a href="https://github.com/andre-rep" title="Github">🚀</a>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Feito com ❤️ por André Nascimento

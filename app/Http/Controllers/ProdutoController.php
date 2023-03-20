@@ -19,11 +19,18 @@ class ProdutoController extends Controller
      */
     public function index(Request $request)
     {
+        if(Produto::count() < 2){
+            return response()->json(['erro' => 'A quantidade total de registros de produtos é menor do que 2'], 500);
+        }
+        
         if($request->has('filtro')){
-            $filtros = explode(';', $request->filtro);
-            foreach($filtros as $key => $condicao){
-                $c = explode(':', $condicao);
-                $this->produto = $this->produto->where($c[0], $c[1], $c[2]);
+            if(strpos($request->filtro, ',')){
+                $produtos = explode(',', $request->filtro);
+                foreach($produtos as $produto){
+                    $this->produto = $this->produto->orWhere('id', $produto);
+                }
+            }else{
+                return response()->json(['erro' => 'Pesquise pelo menos dois produtos'], 400);
             }
         }
 
@@ -48,12 +55,26 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->produto->rules());
-        $produto = $this->produto->create([
-            'nome' => $request->nome,
-            'descricao' => $request->descricao
-        ]);
-        return response()->json($produto, 200);
+        if(strpos($request->nome, ';') && strpos($request->descricao, ';')){
+            $nomes = explode(';', $request->nome);
+            $descricoes = explode(';', $request->descricao);
+            
+            if(sizeof($nomes) == sizeof($descricoes)){
+                $produtos = array();
+                foreach($nomes as $key => $nome){
+                    $request->validate($this->produto->rules());
+                    $produtos[$key] = $this->produto->create([
+                        'nome' => $nome,
+                        'descricao' => $descricoes[$key]
+                    ]);
+                }
+                return response()->json($produtos, 200);
+            }else{
+                return response()->json(['erro' => 'A quantidade de produtos inseridos deve ser a mesma de descrições'], 400);
+            }
+        }else{
+            return response()->json(['erro' => 'Insira pelo menos dois produtos e duas descrições'], 400);
+        }
     }
 
     /**
@@ -64,11 +85,7 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-        $produto = $this->produto->find($id);
-        if($produto === null){
-            return response()->json(['erro' => 'Produto pesquisado não existe'], 404);
-        }
-        return response()->json($produto, 200);
+        
     }
 
     /**
@@ -91,28 +108,54 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $produto = $this->produto->find($id);
+        $produtos = explode(',', $id);
+        $nomes = explode(';', $request->nome);
+        $descricoes = explode(';', $request->descricao);
+        $msg = array();
 
-        if($produto === null){
-            return response()->json(['erro' => 'Impossível realizar a atualização. O recurso solicitado não existe'], 404);
+        foreach($produtos as $produto){
+            if(!$this->produto->find($produto)){
+                array_push($msg, $produto);
+            }
         }
 
-        if($request->method() === 'PATCH'){
-            $regrasDinamicas = array();
-            foreach($produto->rules() as $input => $regra){
-                if(array_key_exists($input, $request->all())){
-                    $regrasDinamicas[$input] = $regra;
+        if($msg != null){
+            if(sizeof($msg) == 1){
+                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto atualizado'], 500);
+            }
+            $mensagem = '';
+            foreach($msg as $m){
+                if($msg[count($msg) - 2] == $m){
+                    $mensagem = $mensagem . $m . ' e ';
+                }else if($msg[count($msg) - 1] == $m){
+                    $mensagem = $mensagem . $m;
+                }else{
+                    $mensagem = $mensagem . $m . ', ';
                 }
             }
-            $request->validate($regrasDinamicas);
+            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto atualizado'], 500);
         }else{
-            $request->validate($produto->rules());
+            if(sizeof($nomes) != sizeof($descricoes)){
+                return response()->json(['erro' => 'A quantidade de produtos inserida tem que ser igual à quantidade de descrições'], 400);
+            }
+            if(sizeof($produtos) != sizeof($nomes)){
+                return response()->json(['erro' => 'A quantidade de ids passados por parâmetro tem que ser igual à quantidade de nomes e descrições'], 400);
+            }
+            if(sizeof($produtos) < 2){
+                return response()->json(['erro' => 'Pelo menos dois produtos devem ser atualizados'], 400);
+            }
         }
 
-        $produto->fill($request->all());
-        $produto->save();
+        foreach($produtos as $key => $produto){
+            $p = $this->produto->find($produto);
 
-        return response()->json($produto, 200);
+            $request->validate($this->produto->rules());
+            $p->nome = $nomes[$key];
+            $p->descricao = $descricoes[$key];
+            $p->save();
+        }
+
+        return response()->json('Produtos atualizados com sucesso', 200);
     }
 
     /**
@@ -121,13 +164,45 @@ class ProdutoController extends Controller
      * @param  \App\Models\Produto  $produto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Produto $produto)
+    public function destroy($id)
     {
+        $produtos = explode(',', $id);
         $produto = $this->produto->find($id);
-        if($produto === null){
-            return response()->json(['erro' => 'O produto solicitado não existe'], 404);
+        $msg = array();
+
+        foreach($produtos as $produto){
+            if(!$this->produto->find($produto)){
+                array_push($msg, $produto);
+            }
         }
-        $produto->delete();
-        return response()->json(['msg' => 'O produto foi removido com sucesso'], 200);
+
+        if($msg != null){
+            if(sizeof($msg) == 1){
+                return response()->json(['erro' => 'O produto com id: ' . $msg[0] . ' não pôde ser encontrado, nenhum produto deletado'], 500);
+            }
+            $mensagem = '';
+            foreach($msg as $m){
+                if($msg[count($msg) - 2] == $m){
+                    $mensagem = $mensagem . $m . ' e ';
+                }else if($msg[count($msg) - 1] == $m){
+                    $mensagem = $mensagem . $m;
+                }else{
+                    $mensagem = $mensagem . $m . ', ';
+                }
+            }
+            return response()->json(['erro' => 'Os produtos com id: ' . $mensagem . ' não puderam ser encontrados, nenhum produto deletado'], 500);
+        }else{
+            if(sizeof($produtos) < 2){
+                return response()->json(['erro' => 'Pelo menos dois produtos devem ser deletados'], 400);
+            }
+        }
+
+        foreach($produtos as $produto){
+            $p = $this->produto->find($produto);
+
+            $p->delete();
+        }
+
+        return response()->json(['msg' => 'Os produtos foram removidos com sucesso'], 200);
     }
 }
