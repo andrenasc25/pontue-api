@@ -1,5 +1,5 @@
 # API Pontue
-<p align="center">Uma api para Criar, Ler, Atualizar e Deletar produtos</p>
+<p align="center">Uma api para Criar, Ler, Atualizar e Deletar produtos. Teste de seleção para a empresa Pontue</p>
 
 ### 🎲 Rodando o Back End
 
@@ -41,15 +41,3 @@ Para utilizar o postman, basta importar a collection que já foi preparada e est
 | `POST` | http://localhost:8000/api/v1/produto/1,2,3 | Atualiza produtos de acordo com parâmetros e valores passados | _method: put, nome: nome atualizado;nome atualizado2;nome atualizado3 e descrição atualizada;descrição atualizada2; descrição atualizada3 |
 | `DELETE` | http://localhost:8000/api/v1/produto/3,4 | Deleta pelo menos dois produtos enviados como id pela url | Não é necessário enviar valores no corpo da requisição |
 | `POST` | http://localhost:8000/api/v1/reset | Reseta a senha do usuário | newPassword: password2 |
-
-
-### Autor
----
-
-<a href="https://github.com/andre-rep">
- <img style="border-radius:50px;" src="https://avatars.githubusercontent.com/u/36203075?v=4" width="100px;" alt=""/>
- <br />
- <sub><b>André Nascimento</b></sub></a> <a href="https://github.com/andre-rep" title="Github">🚀</a>
-
-
-Feito com ❤️ por André Nascimento
